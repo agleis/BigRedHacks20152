@@ -1,5 +1,6 @@
 body {
 	margin: 0px;
+	font-family: sans-serif;
 }
 
 #header {
@@ -104,6 +105,26 @@ body {
 	-webkit-transition-property: all;
 	}
 	
+	#plus_sign {
+	position: absolute;
+	
+	left: -500px;
+	top: 75px;
+	width: 40px;
+	height: 40px;
+	
+	z-index: 99;
+	
+	opacity: 0.9;
+	
+	-webkit-transition: -webkit-transform 400ms ease;
+	-moz-transition: -moz-transform 400ms ease;
+	-o-transition: -o-transform 400ms ease;
+	transition: transform 400ms ease;
+	
+	-webkit-transition-property: all;
+	}
+	
 #back_arrow:hover {
 	cursor: pointer;
 }
@@ -171,7 +192,8 @@ button{
 }
 
 #left_main {
-	
+	height: 430px;
+	overflow: scroll;
 }
 
 #left-title {
@@ -190,7 +212,6 @@ button{
 	
 	margin-top: 0px;
 	
-	font-family: sans-serif;
 	
 	text-align: center;
 	color: #404040;
@@ -203,7 +224,40 @@ button{
 	-webkit-transition-property: all;
 }
 
-.buildingname {
+#aboutIcon {
+	float: left;
+	height: 80px;
+	width: 60px;
+	margin-left: 20px;
+	opacity: 0.8;
+	
+	background-color: rgba(0, 0, 0, 0.0);
+	margin-top: 15px;
+	
+	padding: 0px;
+	border: 0px;
+	cursor: pointer;
+}
+
+#form {
+	position: absolute;
+	left: -500px;
+	top: 140px;
+	
+	text-align: center;
+	
+	width: 500px;
+	opacity: 1.0;
+	
+	-webkit-transition: -webkit-transform 400ms ease;
+	-moz-transition: -moz-transform 400ms ease;
+	-o-transition: -o-transform 400ms ease;
+	transition: transform 400ms ease;
+	
+	-webkit-transition-property: all;
+}
+
+#buildingname {
 	margin-top: 12px;
 	font-size: 32px;
 }
@@ -223,8 +277,13 @@ button{
 	top: 0px;
 	left: 0px;
 	
-	text-align: left;
-	font-size: 32px;
+	text-align: center;
+	font-size: 28px;
+
+	width: 480px;
+	
+	padding-top: 25px;
+	padding-bottom: 25px;
 	
 	border-bottom: 1px solid #404040;
 	
@@ -238,7 +297,6 @@ button{
 
 .bathroom {
 	top: 5px;
-	
 	-webkit-transition: -webkit-transform 400ms ease;
 	-moz-transition: -moz-transform 400ms ease;
 	-o-transition: -o-transform 400ms ease;
@@ -260,4 +318,45 @@ a:visited {
 a:hover {
 	background-color: #E4E4E4;
 	text-decoration: bold;
+}
+
+#blink {
+	height: 102px;
+	width: 500px;
+}
+
+.name{
+	font-size: 32px;
+}
+.rating {
+	font-size: 26px;
+}
+.mf {
+	font-size: 20px;
+}
+.stalls {
+	font-size: 20px;
+}
+.comments {
+	font-size: 20px;
+}
+.epiph {
+	font-size: 20px;
+}
+
+#flush_it {
+	position: absolute;
+	left: 200px;
+	top: 300px;
+	
+	cursor: pointer;
+	
+	text-align: center;
+	width: 100px;
+	
+	border: 1px solid #404040;
+}
+
+#buildingID, #bnameID, #genderID, #numSID, #ratingID, #numEID, #commentsID {
+	padding-bottom: 5px;
 }

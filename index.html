@@ -5,9 +5,11 @@
 	<title>Flushr</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 	<link href="index.css" rel="stylesheet" type="text/css" />
+	<link rel="icon" type="image/png" href="favicon.png">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js"></script>
 	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>
 		function initialize(){
 			var mapCanvas = document.getElementById('map');
@@ -26,7 +28,6 @@
 				success: function(buildings) {
 					localStorage.buildings = JSON.stringify(buildings);
 					bb = JSON.parse(localStorage.buildings);
-					console.log(bb);
 					for(i=0; i < bb.length; i++){
 						var lat = bb[i].Coordinates.latitude;
 						var longi = bb[i].Coordinates.longitude;
@@ -55,7 +56,6 @@
 			google.maps.event.addListener(marker, 'click', function() {
 				var building_of_pin = null;
 				var building_array = JSON.parse(localStorage.buildings);
-				console.log(building_array);
 				for(i = 0; i < building_array.length; i++) {
 					var name = building_array[i].Name;
 					if(name == t) {
@@ -74,25 +74,25 @@
 					if(bathroom_array[i].Building == building_of_pin.Name) {
 						baths_of_building.push(bathroom_array[i]);
 						average_rating += bathroom_array[i].Stars;
-						console.log(bathroom_array[i].Stars);
-						console.log(average_rating);
 						num_bathrooms += 1;
 					}
 				}
-				if(num_bathrooms != 0)average_rating = Math.trunc(average_rating / num_bathrooms);
+				if(num_bathrooms != 0)average_rating =(average_rating / num_bathrooms).toFixed(1);
 				// Display in left sidebar
-				htmltitle = "";
-				htmlbrooms = "";
-				htmltitle += '<div id="building"><p class="buildingname">'+building_of_pin.Name+'</p><p class="average"><span class="av">'+'Average Rating: '+average_rating+'</span><span class="num">'+"Number of bathrooms: "+num_bathrooms+'</span></div>';
+				var htmltitle = "";
+				var htmlbrooms = "";
+				htmltitle += '<div id="building"><p id="buildingname">'+building_of_pin.Name+'</p><p class="average"><span class="av">'+'Average Rating: '+average_rating+'</span><span class="num">'+"Number of bathrooms: "+num_bathrooms+'</span></div>';
 				for(i = 0; i < baths_of_building.length; i++) {
-					htmlbrooms += '<a href="#"><div class="bathrooms"><p class="bathroom">'+baths_of_building[i].Name+'</p></div></a>';
+					htmlbrooms += '<a href="#" class="brooms" id = "'+baths_of_building[i].Name+'" onclick="bathroomer(this.id)"><div id="'+baths_of_building[i].Name+'" class="bathrooms"><span class="bathroom">'+baths_of_building[i].Name+'</span><br /><span class="rating">'+baths_of_building[i].Stars+'/'+'5.0</span></div></a>';
 				}
+				localStorage.leftarray = JSON.stringify(baths_of_building);
+				
 				document.getElementById("left_title").innerHTML = htmltitle;
 				document.getElementById("left_main").innerHTML = htmlbrooms;
 				
 				document.getElementById("left_bar").style.width = "500px";
 				document.getElementById("back_arrow").style.left = "10px";
-				document.getElementById("drop_Menu").style.left = "0px";
+				document.getElementById("plus_sign").style.left = "10px";
 				document.getElementById("building").style.left = "80px";
 				document.getElementById("left_sidebar").style.width = "79px";
 				document.getElementById("left_top").style.width = "500px";
@@ -103,6 +103,32 @@
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
 		
+		// Brings up a bathroom on the left column
+		function bathroomer(name) {
+			var array = document.getElementsByClassName("bathrooms");
+			for(i = 0; i < array.length; i++) {
+				if(array[i].id == name) {
+					var html = "";
+					array[i].style.height = "300px";
+					var bathrooms = JSON.parse(localStorage.leftarray);
+					for(j = 0; j < bathrooms.length; j++) {
+						if(bathrooms[j].Name == name) {
+							var comments = "";
+							if(bathrooms[j].Comments != [""]) {
+								comments = "Comments: " + bathrooms[j].Comments;
+							}
+							else comments = "";
+							html += '<span class="name">'+name+'</span><br /><span class="rating">'+'Rating: '+bathrooms[j].Stars+'</span><br /><span class="mf">'+'Gender: '+bathrooms[j].Gender+'</span><br /><span class="stalls">'+'Number of Stalls: '+bathrooms[j].NumStalls+'</span><br /><span class="comments">'+comments+'</span><br /><span class="epiph">'+'Epiphanies: '+bathrooms[j].NumEpiphanies+'</span>';
+							array[i].innerHTML = html;
+						}
+					}
+				}
+				else {
+					array[i].innerHTML = "";
+					array[i].style.height="10px";
+				}
+			}
+		}
 		// decreases the left sidebar
 		function decreaseLeft() {
 			  document.getElementById("left_bar").style.width = "0px";
@@ -111,74 +137,121 @@
 			  document.getElementById("left_title").style.width = "0px";
 			  document.getElementById("left_main").style.left = "-500px";
 			  document.getElementById("left_main").innerHTML = "";
+			  document.getElementById("form").style.left="-500px";
 			  document.getElementById("building").style.left = "-500px";
 			  back_arrowAnim();
-		}
-		
-		//brings menu down
-		function increase_down(){
-		  document.getElementById("drop_Menu").style.height="700px";
-		  up_arrowAnim();
-		}
-		
-		//brings menu up
-		function decrease_down(){
-		  document.getElementById("drop_Menu").style.height="0px";
-		  document.getElementById("up_arrow").style.top="-200px"
 		}
 		
 		//back_arrow animation
 		function back_arrowAnim(){
 		  document.getElementById("back_arrow").style.left= "-500px";
+		  document.getElementById("plus_sign").style.left= "-500px";
 		}
 		document.getElementById("back_arrow").addEventListener("click",back_arrowAnim);
-		
-		//animation to make the menu drop down
-		function drop_MenuAnim(){
-		  document.getElementById("drop_Menu").style.height="100%";
-		  increase_down(); 
+
+		// Creates a new form
+		function new_form() {
+			document.getElementById("form").style.left="0px";
+			document.getElementById("left_main").innerHTML = "";
+			document.getElementById("buildingID").value = document.getElementById("buildingname").innerHTML;
 		}
-		document.getElementById("drop_Menu").addEventListener("click",drop_MenuAnim);
+	</script>
+	<script>
+		$(document).ready(function() {
 		
-		//animation to raise drop down menu
-		function raise_menuAnim(){
-		  document.getElementById("drop_Menu").style.height="0px";
-		  decrease_down();
-		}
-		
-		document.getElementById("drop_Menu").addEventListener("click",raise_menuAnim);
-		
-		//up arrow disappears on drop_Menu
-		function up_arrowAnim(){
-		  document.getElementById("up_arrow").style.top= "10px";
-		}  
-		document.getElementById("up_arrow").addEventListener("click",up_arrowAnim);
-		
-		
-		
+		});
 	</script>
   </head>
   <body>
 	<div id="header">
-	  <button type="button" id="menu" onclick="drop_MenuAnim()"><img src="menu.png" /></button>
+	  <a href="about.html" id="aboutIcon" ><img src="about.png" /></a>
 
 	  <img src="logo.png" id="logo" /></div>
 	<div id="main">
 
 	  <div id="map"></div>
-	  <div id="drop_Menu">
-		 <button type="button" id="up_arrow" onclick="raise_menuAnim()"><img src="up_arrow.png" /></button>
-	  </div>
 	  <div id="left_bar">
 			<div id="left_top">
 				<div id="left_sidebar">
 					<button type="button" id="back_arrow" onclick="decreaseLeft()"><img src="back_arrow.png" /></button>
+					<button type="button" id="plus_sign" onclick="new_form()"><img src="plus_sign.png" /></button>
 				</div>
 				<div id="left_title">
 				
 				</div>
-			<div id="left_main">
-			
+				<div id="left_main">
+				
+				</div>
+				<div id="form">
+				<form>
+					Building <br />
+					<input id = "buildingID" type = "text" name ="buildname"><br>
+					Bathroom Name/Floor: <br />
+					<input id = "bnameID" type = "text" name = "bname">
+					<br />
+					Gender:
+					<select id = "genderID" name = "gender">
+						<option value ="M" checked>Male<br></option>
+						<option value = "F">Female<br></option>
+						<option value = "U">Unisex<br></option>
+					</select>
+					<br />
+					Number of Stalls: <br />
+						<input id = "numSID" type="text" name ="numS">
+					<br />
+					General Rating!<br />
+					<select name = "rating" id="ratingID">
+						<option value="1">1.<br></option>
+						<option value="2">2.<br></option>
+						<option value="3">3.<br></option>
+						<option value="4">4.<br></option>
+						<option value="5">5.<br></option>
+					</select>
+					<br />
+					Did you have a Eureka! moment here? <br />
+					<select name = "numE" id="numEID">
+						<option value=0>No.<br></option>
+						<option value=1>Yes!<br></option>
+					</select>
+					<br />
+					Would you like to share? <br />
+					<input id = "commentsID" type = "text" name = "comment" size = "60">
+
+					 <button id="flush_it" type ="button" onClick= "onSubmit()">Flush it!</button>
+
+					<!--<button id = "submit" onClick = "onSubmit()">SUBMIT</button>-->
+				</form>
+				<script>
+				function onSubmit(){
+					var buildingg = document.getElementById("buildingID").value;
+					document.getElementById("buildingID").value = "";
+					var namee = document.getElementById("bnameID").value;
+					document.getElementById("bnameID").value = "";
+					var genderr = document.getElementById("genderID").value;
+					document.getElementById("genderID").value = "";
+					var numStalls = document.getElementById("numSID").value;
+					document.getElementById("numSID").value = "";
+					var rating = document.getElementById("ratingID").value; 
+					var numEe = document.getElementById("numEID").value; 
+					document.getElementById("numEID").value = "";
+					var Epiphany = document.getElementById("commentsID").value;
+					document.getElementById("commentsID").value = "";
+					var comments = []
+					if(Epiphany == "") comments = [""];
+					else comments.push(Epiphany);
+				   
+					var Bathroom = Parse.Object.extend("Bathroom");
+					var nbr = new Bathroom();
+
+					nbr.save("Building", buildingg);
+					nbr.save("Name", namee);
+					nbr.save("Gender", genderr);
+					nbr.save("Stars", Number(rating));
+					nbr.save("NumStalls", Number(numStalls));
+					nbr.save("NumEpiphanies", Number(numEe));
+					nbr.save("Comments", comments);
+				}
+				</script>
 			</div>
 		</div>
 	  </div>

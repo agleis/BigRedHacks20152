@@ -1,0 +1,63 @@
+				  <html>
+				  <head></head>
+				  <body>
+				  <form>
+					Building <br>
+					<input id = "buildingID" type = "text" name ="buildname"><br>
+					Bathroom Name/Floor: <br>
+					<input id = "bnameID" type = "text" name = "bname">
+					<br>
+					Gender:
+					<select id = "genderID" name = "gender">
+						<option value ="M" checked>Male<br></option>
+						<option value = "F">Female<br></option>
+						<option value = "U">Unisex<br></option>
+					</select>
+					Number of Stalls: <br>
+						<input id = "numSID" type="text" name ="numS">
+					<br>
+					General Rating!<br>
+					<select name = "rating" id="ratingID">
+						<option value="1">1.<br></option>
+						<option value="2">2.<br></option>
+						<option value="3">3.<br></option>
+						<option value="4">4.<br></option>
+						<option value="5">5.<br></option>
+					</select>
+					Did you have a Eureka! moment here? <br>
+					<select name = "numE" id="numEID">
+						<option value=0>No.<br></option>
+						<option value=1>Yes!<br></option>
+					</select>
+					Would you like to share? <br>
+					<input id = "commentsID" type = "text" name = "comment" size = "60">
+
+					 <button type ="button" onClick= "onSubmit()">Submit!</button>
+
+					<!--<button id = "submit" onClick = "onSubmit()">SUBMIT</button>-->
+				</form>
+				<script>
+				function onSubmit(){
+					var buildingg = document.getElementById("buildingID").value;
+					var namee = document.getElementById("bnameID").value;
+					var genderr = document.getElementById("genderID").value;
+					var numStalls = document.getElementById("numSID").value;
+					var rating = document.getElementById("ratingID").value; 
+					var numEe = document.getElementById("numEID").value; 
+					var Epiphany = document.getElementById("commentsID").value; 
+				   
+					var Bathroom = Parse.Object.extend("Bathroom");
+					var nbr = new Bathroom();
+					
+					nbr.save("Building", buildingg);
+					nbr.save("Name", namee);
+					nbr.save("Gender", genderr);
+					nbr.save("Stars", Number(rating));
+					nbr.save("NumStalls", Number(numStalls));
+					nbr.save("NumEpiphanies", Number(numEe));
+					nbr.save("Comments", Epiphany);
+					
+				}
+				</script>
+				</body>
+				</html>
