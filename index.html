@@ -44,7 +44,12 @@
 					localStorage.bathrooms = JSON.stringify(bathrooms);
 				}
 			});
+				
+			google.maps.event.addListener(map, 'mousemove', function (event) {
+				displayCoordinates(event.latLng);               
+			});
 			}
+			
 		function createMarker(pos, t, m) {
 			var image='blue-dot.png'
 			var marker = new google.maps.Marker({
@@ -155,11 +160,28 @@
 			document.getElementById("left_main").innerHTML = "";
 			document.getElementById("buildingID").value = document.getElementById("buildingname").innerHTML;
 		}
-	</script>
-	<script>
-		$(document).ready(function() {
 		
-		});
+		function allowDrop(ev) {
+			ev.preventDefault();
+		}
+
+		function drag(ev) {
+			ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");
+			ev.target.appendChild(document.getElementById(data));
+		}
+		
+		function displayCoordinates(pnt) {
+		    var lat = pnt.lat();
+		    lat = lat.toFixed(4);
+		    var lng = pnt.lng();
+		    lng = lng.toFixed(4);
+		    console.log("Latitude: " + lat + "  Longitude: " + lng);
+	    }
 	</script>
   </head>
   <body>
@@ -167,10 +189,11 @@
 	  <a href="about.html" id="aboutIcon" ><img src="about.png" /></a>
 
 	  <img src="logo.png" id="logo" />
+	  <button type="button" id="blue_dot"><img src="blue-dot.png" draggable="true" ondragstart="drag(event)" /></button>
 	</div>
 	<div id="main">
 
-	  <div id="map"></div>
+	  <div id="map" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 	  <div id="left_bar">
 			<div id="left_top">
 				<div id="left_sidebar">

@@ -1,6 +1,7 @@
 body {
 	margin: 0px;
 	font-family: sans-serif;
+	cursor: url('blue-dot.bmp');
 }
 
 #header {
@@ -105,7 +106,7 @@ body {
 	-webkit-transition-property: all;
 	}
 	
-	#plus_sign {
+#plus_sign {
 	position: absolute;
 	
 	left: -500px;
@@ -123,11 +124,12 @@ body {
 	transition: transform 400ms ease;
 	
 	-webkit-transition-property: all;
-	}
+}
 	
 #back_arrow:hover {
 	cursor: pointer;
 }
+
 #drop_Menu {
 	background-color: white;
 
@@ -233,6 +235,20 @@ button{
 	
 	background-color: rgba(0, 0, 0, 0.0);
 	margin-top: 15px;
+	
+	padding: 0px;
+	border: 0px;
+	cursor: pointer;
+}
+
+#blue_dot {
+	float: right;
+	height: 80px;
+	width: 60px;
+	margin-right: 20px;
+	opacity: 0.8;
+	
+	background-color: rgba(0, 0, 0, 0.0);
 	
 	padding: 0px;
 	border: 0px;
